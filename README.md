@@ -26,7 +26,7 @@ SHOPIQ is a Flask-based price comparison website that helps users compare the pr
 
 ## Project Structure
 
-```text
+``text
 JAVA PRICE COMPARISON/
 ├── app.py
 ├── routes.py
@@ -51,7 +51,7 @@ JAVA PRICE COMPARISON/
 ├── logs/
 ├── __pycache__/
 └── .vscode/
-```
+``
 
 ## Main Files
 
@@ -74,18 +74,18 @@ JAVA PRICE COMPARISON/
 
 ### PowerShell
 
-```powershell
+``powershell
 python -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
 python app.py
-```
+``
 
 Open:
 
-```text
+``text
 http://localhost:5000
-```
+``
 
 ## Run In VS Code
 
@@ -147,3 +147,57 @@ Or use:
 - Some packages in `requirements.txt` are optional or version-sensitive depending on Python version
 - The app can still run locally even if optional services like Redis or MongoDB are not configured
 - Demo scraper support is available for local development and fallback behavior
+
+## Deployment
+
+### Deploy on Render (Free Tier)
+
+Your app is already configured for Render deployment with `render.yaml`.
+
+**Prerequisites:**
+- GitHub account
+- Render account (free): https://render.com
+- SerpAPI key (optional): https://serpapi.com
+
+**Steps:**
+
+1. **Go to Render Dashboard**
+   - Visit: https://dashboard.render.com
+   - Sign up / Log in with your GitHub account
+
+2. **Create a New Blueprint**
+   - Click **New +** then **Blueprint**
+   - Connect your GitHub account if not already connected
+   - Select repository: **Taniya-butola/ShopIQ**
+   - Render will auto-detect your `render.yaml` file
+   - Click **Apply**
+
+3. **Set Environment Variables**
+   
+   | Key | Value |
+   |-----|-------|
+   | `SERPAPI_API_KEY` | Your SerpAPI key (get free at serpapi.com) |
+
+   > Note: Redis is included automatically in your `render.yaml` (free tier)
+
+4. **Deploy**
+   - Click **Deploy**
+   - Wait 3-5 minutes for build to complete
+   - Your app will be live at: `https://shopiq.onrender.com`
+
+5. **Verify Deployment**
+   - Visit: `https://your-app-name.onrender.com/health`
+   - Should return: `{"status": "ok", "service": "PriceWise API"}`
+
+**Free Tier Limits:**
+
+| Service | Limit |
+|---------|-------|
+| Render Web | 750 hours/month, spins down after 15 min inactivity |
+| Render Redis | 25MB storage |
+
+**Troubleshooting:**
+
+- **App spins down:** Free tier apps spin down after 15 min inactivity. First request takes ~30s to wake up.
+- **Build fails:** Check `requirements.txt` for incompatible packages. View build logs in Render dashboard.
+- **Scrapers timeout:** Free tier has timeout limits. Reduce `MAX_SCRAPERS` to 2-3.
