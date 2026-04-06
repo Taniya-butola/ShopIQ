@@ -1,0 +1,68 @@
+version: "3.9"
+
+# ─── PriceWise — Full Stack Local Development ─────────────────────────────────
+# Usage: docker compose up --build
+#
+# Services:
+#   backend  — Flask API on :5000
+#   redis    — Cache layer on :6379
+#   mongo    — Optional MongoDB on :27017
+#   nginx    — Reverse proxy on :80 (serves static files, proxies /api)
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: pricewise-backend
+    env_file: .env
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - MONGO_URI=mongodb://mongo:27017/pricewise
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+      - ./frontend:/app/../frontend
+      - pricewise-data:/app/data
+      - pricewise-logs:/app/logs
+    depends_on:
+      - redis
+      - mongo
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: pricewise-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:7
+    container_name: pricewise-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    container_name: pricewise-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./frontend/static:/usr/share/nginx/html/static:ro
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  pricewise-data:
+  pricewise-logs:
+  redis-data:
+  mongo-data:

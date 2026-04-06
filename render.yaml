@@ -1,0 +1,35 @@
+﻿# Render Blueprint for PriceWise
+# Deploy: render blueprint deploy (or use dashboard)
+
+services:
+  # Web Service - Flask App
+  - type: web
+    name: pricewise
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:create_app() --bind 0.0.0.0:$PORT --workers 2 --timeout 120
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: SECRET_KEY
+        generateValue: true
+      - key: FLASK_ENV
+        value: production
+      - key: CACHE_TTL
+        value: 3600
+      - key: MAX_SCRAPERS
+        value: 3
+      - key: SERPAPI_API_KEY
+        sync: false
+      - key: SERPAPI_GL
+        value: in
+      - key: SERPAPI_HL
+        value: en
+
+  # Redis Cache (Free tier)
+  - type: redis
+    name: pricewise-redis
+    plan: free
+    maxmemoryPolicy: allkeys-lru

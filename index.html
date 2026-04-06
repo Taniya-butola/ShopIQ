@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SHOPIQ | Smart Price Comparison</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <nav class="nav">
+      <div class="nav-inner">
+        <a href="/" class="logo">
+          <span class="logo-mark">S</span>
+          <span class="logo-text">SHOPIQ</span>
+        </a>
+        <div class="nav-links">
+          <a href="#resultsArea" class="nav-link">Compare</a>
+          <a href="#" class="nav-link" id="alertsNavBtn">My Alerts</a>
+        </div>
+      </div>
+    </nav>
+
+    <header class="hero" id="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">Single product, every major store</span>
+        <h1 class="hero-title">Find the smartest price before you buy.</h1>
+        <p class="hero-sub">
+          SHOPIQ compares one product across multiple platforms and highlights the
+          best deal instantly, so you can decide with confidence.
+        </p>
+
+        <div class="hero-trust">
+          <div class="trust-pill">Trusted color cues</div>
+          <div class="trust-pill">Card-based comparison</div>
+          <div class="trust-pill">Fast decision making</div>
+        </div>
+
+        <form class="search-form" id="searchForm" autocomplete="off">
+          <div class="search-box">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="M21 21l-4.35-4.35"></path>
+            </svg>
+            <input
+              type="text"
+              id="searchInput"
+              class="search-input"
+              placeholder="Search one product, e.g. iPhone 15 128GB"
+              aria-label="Search products"
+              spellcheck="false"
+            />
+            <ul class="autocomplete-list" id="autocompleteList" role="listbox"></ul>
+            <button type="submit" class="search-btn">
+              <span class="btn-text">Compare Prices</span>
+              <span class="btn-spinner" hidden>
+                <svg viewBox="0 0 24 24" class="spinner-svg"><circle cx="12" cy="12" r="10" stroke-width="3"></circle></svg>
+              </span>
+            </button>
+          </div>
+        </form>
+
+        <div class="popular-tags">
+          <span class="tag-label">Try:</span>
+          <button class="tag" data-q="iPhone 15">iPhone 15</button>
+          <button class="tag" data-q="Sony WH-1000XM5">Sony WH-1000XM5</button>
+          <button class="tag" data-q="Samsung Galaxy S24">Samsung Galaxy S24</button>
+          <button class="tag" data-q="Nike Air Max">Nike Air Max</button>
+        </div>
+      </div>
+
+      <aside class="hero-panel">
+        <div class="hero-panel-card">
+          <div class="panel-label">How SHOPIQ helps</div>
+          <div class="decision-list">
+            <div class="decision-item">
+              <span class="decision-dot lowest"></span>
+              <div>
+                <strong>Green</strong>
+                <p>Lowest price across platforms</p>
+              </div>
+            </div>
+            <div class="decision-item">
+              <span class="decision-dot average"></span>
+              <div>
+                <strong>Yellow</strong>
+                <p>Reasonable mid-range deal</p>
+              </div>
+            </div>
+            <div class="decision-item">
+              <span class="decision-dot highest"></span>
+              <div>
+                <strong>Red</strong>
+                <p>Higher-priced option</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-panel-card accent-card">
+          <div class="panel-label">What to look for</div>
+          <p class="panel-copy">
+            Focus on the highlighted best deal card, compare delivery and ratings,
+            then jump directly to the store.
+          </p>
+        </div>
+      </aside>
+    </header>
+
+    <section class="filters-wrap hidden" id="filtersBar">
+      <div class="filters-panel">
+        <div class="filter-group filter-grow">
+          <label class="filter-label">Platforms</label>
+          <div class="platform-checks">
+            <label class="check-label"><input type="checkbox" value="shopping" checked class="platform-check" /> Shopping API</label>
+            <label class="check-label"><input type="checkbox" value="amazon" checked class="platform-check" /> Amazon</label>
+            <label class="check-label"><input type="checkbox" value="flipkart" checked class="platform-check" /> Flipkart</label>
+            <label class="check-label"><input type="checkbox" value="snapdeal" checked class="platform-check" /> Snapdeal</label>
+            <label class="check-label"><input type="checkbox" value="demo" checked class="platform-check" /> Demo</label>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Sort</label>
+          <select class="filter-select" id="sortSelect">
+            <option value="price_asc">Lowest price first</option>
+            <option value="price_desc">Highest price first</option>
+            <option value="rating_desc">Top rated</option>
+            <option value="relevance">Relevance</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Price range</label>
+          <div class="price-range">
+            <input type="number" class="range-input" id="minPrice" placeholder="Min" min="0" />
+            <span class="range-sep">to</span>
+            <input type="number" class="range-input" id="maxPrice" placeholder="Max" min="0" />
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Minimum rating</label>
+          <select class="filter-select" id="minRating">
+            <option value="0">Any rating</option>
+            <option value="3">3★ and above</option>
+            <option value="4">4★ and above</option>
+            <option value="4.5">4.5★ and above</option>
+          </select>
+        </div>
+
+        <button class="apply-filters-btn" id="applyFilters">Apply filters</button>
+      </div>
+    </section>
+
+    <main class="results-area" id="resultsArea">
+      <section class="insight-grid hidden" id="resultsStats">
+        <article class="insight-card strongest">
+          <div class="insight-label">Best deal</div>
+          <div class="insight-main" id="resultsCount">0 results</div>
+          <p class="insight-copy" id="recommendationText">Search for a product to compare offers.</p>
+        </article>
+
+        <article class="insight-card">
+          <div class="insight-label">Lowest price</div>
+          <div class="insight-price success" id="lowestPriceMetric">--</div>
+          <p class="insight-copy" id="platformsOk">No platforms scanned yet</p>
+        </article>
+
+        <article class="insight-card">
+          <div class="insight-label">Average price</div>
+          <div class="insight-price warning" id="avgPriceMetric">--</div>
+          <p class="insight-copy">Useful benchmark across available listings</p>
+        </article>
+
+        <article class="insight-card">
+          <div class="insight-label">Potential savings</div>
+          <div class="insight-price accent" id="savingsMetric">--</div>
+          <p class="insight-copy" id="cacheStatus">Waiting for live comparison</p>
+        </article>
+      </section>
+
+      <section class="best-deal-banner hidden" id="bestDealBanner">
+        <div class="best-deal-copy">
+          <span class="banner-badge">Best deal right now</span>
+          <h2 class="bd-title" id="bdTitle">--</h2>
+          <p class="banner-copy">Lowest visible price with quick access to the store listing.</p>
+        </div>
+        <div class="bd-price" id="bdPrice">--</div>
+      </section>
+
+      <div class="products-grid" id="productsGrid"></div>
+
+      <div class="empty-state hidden" id="emptyState">
+        <div class="empty-icon">No results</div>
+        <h3>We could not find matching offers</h3>
+        <p>Try a clearer product name or adjust the filters to widen the comparison.</p>
+      </div>
+
+      <div class="skeletons hidden" id="skeletons">
+        <div class="skeleton-card" aria-hidden="true">
+          <div class="sk sk-img"></div>
+          <div class="sk sk-line lg"></div>
+          <div class="sk sk-line"></div>
+          <div class="sk sk-line sm"></div>
+        </div>
+        <div class="skeleton-card" aria-hidden="true">
+          <div class="sk sk-img"></div>
+          <div class="sk sk-line lg"></div>
+          <div class="sk sk-line"></div>
+          <div class="sk sk-line sm"></div>
+        </div>
+        <div class="skeleton-card" aria-hidden="true">
+          <div class="sk sk-img"></div>
+          <div class="sk sk-line lg"></div>
+          <div class="sk sk-line"></div>
+          <div class="sk sk-line sm"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal-overlay hidden" id="alertModal" role="dialog" aria-modal="true" aria-labelledby="alertModalTitle">
+    <div class="modal">
+      <button class="modal-close" id="alertModalClose" aria-label="Close">x</button>
+      <h2 class="modal-title" id="alertModalTitle">Set price alert</h2>
+      <p class="modal-sub">We will notify you when this product drops below your target price.</p>
+      <div id="alertProductName" class="alert-product-name"></div>
+      <div class="modal-form">
+        <input type="hidden" id="alertProductId" />
+        <label class="form-label">Email address</label>
+        <input type="email" class="form-input" id="alertEmail" placeholder="you@example.com" />
+        <label class="form-label">Target price (INR)</label>
+        <input type="number" class="form-input" id="alertTargetPrice" placeholder="1499" min="1" />
+        <button class="submit-btn" id="alertSubmit">Create alert</button>
+        <div class="form-feedback" id="alertFeedback"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay hidden" id="historyModal" role="dialog" aria-modal="true">
+    <div class="modal modal-wide">
+      <button class="modal-close" id="historyModalClose" aria-label="Close">x</button>
+      <h2 class="modal-title">Price history</h2>
+      <p class="modal-sub" id="historyProductName"></p>
+      <div class="history-chart-container">
+        <canvas id="historyChart"></canvas>
+        <div class="history-empty hidden" id="historyEmpty">No price history available yet.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
